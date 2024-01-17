@@ -1,5 +1,5 @@
 import React, { useEffect,Fragment, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField } from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField, TextareaAutosize } from "@mui/material"
 import SaveIcon from "@mui/icons-material/Save";
 import { DataGrid, } from '@mui/x-data-grid';
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,19 +15,18 @@ const Home = () => {
     const [showDialog, setShowDialog] = useState(false);
     const [update,setUpdate]=useState()
     const [formData, setFormData]=useState({
-        name:"",
-        email:"",
-        company:"",
-        role:""
+        firstName:"",
+        lastName:"",
+        description:""
 
     })
 
     const columns= [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'First name', width: 150 },
-        { field: 'email', headerName: 'Email', width: 200 },
-        { field: 'company', headerName: 'Company', width: 200 },
-        { field: 'role', headerName: 'Role', width: 200 },
+        { field: 'firstName', headerName: 'First name', width: 150 },
+        { field: 'lastName', headerName: 'Last name', width: 200 },
+        { field: 'description', headerName: 'Description', width: 250 },
+      
         {
             title: "Action",
             field: "Action",
@@ -74,7 +73,7 @@ console.log(formData)
            const response= await axios.post(apiUrl,formData);
             console.log(response.data)
             userList()
-            setFormData({ name: '', email: '' ,company:'',role:''});
+            setFormData({ firstName: '', lastName: '' ,description:'',});
             toast.success('data added successfully.', {
                 position: "top-right",
                 autoClose: 5000,
@@ -155,12 +154,12 @@ const deleteRow = async (update)=>{
                         <TextField
                           id="outlined-basic"
                           sx={{ width: 500 }}
-                          label="Name"
+                          label="First Name"
                           variant="outlined"
                           type="text"
                           required
-                          name="name"
-                          value={update.name}
+                          name="firstName"
+                          value={update.firstName}
                           onChange={updateData}
                          
                         />
@@ -172,13 +171,13 @@ const deleteRow = async (update)=>{
                         <TextField
                           id="outlined-basic"
                           sx={{ width: 500 }}
-                          label="Email"
+                          label="Last Name"
                           variant="outlined"
                           type="text"
                           required
-                          name="email"
+                          name="lastName"
                           onChange={updateData}
-                          value={update.email}
+                          value={update.lastName}
                          
                         />
                       </div>
@@ -189,35 +188,19 @@ const deleteRow = async (update)=>{
                         <TextField
                           id="outlined-basic"
                           sx={{ width: 500 }}
-                          label="Company"
+                          label="Description"
                           variant="outlined"
                           type="text"
                           required
-                          name="company"
+                          name="description"
                           onChange={updateData}
-                          value={update.company}
+                          value={update.description}
                          
                         />
                       </div>
                     </div>
                     
-                    <div className="row my-3 ">
-                      <div className="col ">
-                        <TextField
-                          id="outlined-basic"
-                          sx={{ width: 500 }}
-                          label="Role"
-                          variant="outlined"
-                          type="text"
-                          required
-                          onChange={updateData}
-                          name="role"
-                          value={update.role}
-                         
-                        />
-                      </div>
-                    </div>
-                 
+             
                  
                   
                   </form>
@@ -270,14 +253,17 @@ const deleteRow = async (update)=>{
             <div className="container">
                 <form onSubmit={addUser}>
                     <h1 className="text-center title font-family" mt-3 >Add User</h1>
-                    <div className='mx-auto text-center '>
+                    <div className='mx-auto text-center'>
                         <div class="row">
-                            <div class="col">
+                            <div class="col sm-6">
                                 <TextField
                                     id="outlined-basic"
-                                    sx={{ width: 500 }}
-                                    name='name'
-                                    value={formData.name}
+                                    sx={{ 
+                                        width:'100%',
+                                    maxWidth: '500Px' 
+                                    }}
+                                    name='firstName'
+                                    value={formData.firstName}
                                     onChange={handleChange}
                                     label="Enter your name"
                                     variant="outlined"
@@ -291,11 +277,14 @@ const deleteRow = async (update)=>{
                             <div class="col">
                                 <TextField
                                     id="outlined-basic"
-                                    sx={{ width: 500 }}
-                                    name='email'
-                                    value={formData.email}
+                                    sx={{ 
+                                        width:'100%',
+                                    maxWidth: '500Px' 
+                                    }}
+                                    name='lastName'
+                                    value={formData.lastName}
                                     onChange={handleChange}
-                                    label="Enter your email"
+                                    label="Enter your Last name"
                                     variant="outlined"
                                     required
                                 />
@@ -303,32 +292,21 @@ const deleteRow = async (update)=>{
                         </div>
                         <div class="row my-3">
                             <div class="col">
-                                <TextField
-                                    id="outlined-basic"
-                                    sx={{ width: 500 }}
-                                    name='company'
-                                    value={formData.company}
-                                    onChange={handleChange}
-                                    label="Enter your company name"
-                                    variant="outlined"
-                                    required
-                                />
+                            <TextareaAutosize
+                            minRows={3} 
+                            style={{
+                            width: '100%', 
+                            maxWidth: '500px'
+                            }}
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            placeholder="Enter your description"
+                            required
+                        />
                             </div>
                         </div>
-                        <div class="row my-3">
-                            <div class="col">
-                                <TextField
-                                    id="outlined-basic"
-                                    sx={{ width: 500 }}
-                                    name='role'
-                                    value={formData.role}
-                                    onChange={handleChange}
-                                    label="role"
-                                    variant="outlined"
-                                    required
-                                />
-                            </div>
-                        </div>
+                      
  {/* ===========================================Button=========================================================================================== */}
  <Stack
  spacing={2}
@@ -344,7 +322,8 @@ const deleteRow = async (update)=>{
 
             </div>
             
-            <div style={{ height: 400, width: '100%' }}>
+            {/* <div style={{ height: 400, width: '100%' }}> */}
+            <div className='container' style={{ height: 400, width: '100%', margin: '0 auto' }}>
       <DataGrid
         rows={data}
         columns={columns}
@@ -354,7 +333,6 @@ const deleteRow = async (update)=>{
           },
         }}
         pageSizeOptions={[5, 10]}
-        // checkboxSelection
         onRowClick={(item)=>setUpdate(item.row)}
       />
     </div>
